@@ -13,7 +13,7 @@ $spellChecker->whiteList(['Lett','theese','spellins','goo']);
 
 
 //Set preferred words to select from corrctions. Optional.
-$spellChecker->preferredWords(['These','Words','Are','Most','Important','To','Me']);
+$spellChecker->prefer(['These','Words','Are','Most','Important','To','Me']);
 
 $correction = $spellChecker->check('A word or sentence');
 ```

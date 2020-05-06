@@ -10,6 +10,7 @@ class SpellChecker
 {
     public $language;
     public $whiteList;
+    public $preferredWords;
     private $phpPspell;
     private $context;
 
@@ -21,9 +22,27 @@ class SpellChecker
         return $this;
     }
 
-    public function whiteList(array $whiteList)
+    /**
+     * Set the white list.
+     *
+     * @param array $whiteList
+     * @return SpellChecker
+     */
+    public function whiteList(array $whiteList) : SpellChecker
     {
         $this->whiteList = $whiteList;
+        return $this;
+    }
+
+    /**
+     * Set the preferred words list.
+     *
+     * @param array $preferredWords
+     * @return SpellChecker
+     */
+    public function prefer(array $preferredWords) : SpellChecker
+    {
+        $this->preferredWords = $preferredWords;
         return $this;
     }
 
@@ -108,11 +127,48 @@ class SpellChecker
      */
     private function prioritizePreferredWords(array $spellingSuggestions): string
     {
-        $preferredWords = ($this->whiteList) ? array_merge(self::preferredWords(), $this->whiteList) : self::preferredWords();
+        $preferredWords = $this->combinedPreferredWordsAndWhiteList();
 
-        $preferredCorrection = array_values(array_intersect($spellingSuggestions, $preferredWords));
+        if(!$preferredWords) {
+            return $spellingSuggestions[0];
+        }
 
-        return ($preferredCorrection) ? $preferredCorrection[0] : $spellingSuggestions[0];
+        $preferredWord = self::preferredWordInSuggestions($spellingSuggestions, $preferredWords);
+
+        return ($preferredWord) ? $preferredWord : $spellingSuggestions[0];
+    }
+
+    /**
+     * Combines $preferredWords and $whiteList, if existent.
+     *
+     * @return array
+     */
+    private function combinedPreferredWordsAndWhiteList() : array
+    {
+        if ($this->preferredWords && $this->whiteList) {
+            $preferredWords = array_merge($this->preferredWords, $this->whiteList);
+        } elseif($this->preferredWords) {
+            $preferredWords = $this->preferredWords;
+        } elseif($this->whiteList) {
+            $preferredWords = $this->whiteList;
+        } else {
+            $preferredWords = [];
+        }
+        return $preferredWords;
+    }
+
+    /**
+     * Returns a preferred word if it is in the suggestions.
+     *
+     * @param $spellingSuggestions
+     * @param $preferredWords
+     * @return string|null
+     */
+    private static function preferredWordInSuggestions(array $spellingSuggestions, array $preferredWords)
+    {
+        $preferredWordFromSuggestions = array_values(array_intersect($spellingSuggestions, $preferredWords));
+
+        return ($preferredWordFromSuggestions) ? $preferredWordFromSuggestions[0] : null;
     }
 
     /**
