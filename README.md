@@ -1,7 +1,7 @@
-#Spellchecker
+# Spellchecker
 A convenient chainable wrapper for `tigitz/php-spellchecker`
 
-##Usage
+## Usage
 ```php
 use Forrestedw\SpellChecker\SpellChecker;
 
