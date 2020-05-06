@@ -1,0 +1,15 @@
+{
+    "name": "forrestedw/spellchecker",
+    "description": "A convenient chainable wrapper for tigitz/php-spellchecker",
+    "type": "project",
+    "require": {
+        "tigitz/php-spellchecker": "^0.1.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "forrestedw",
+            "email": "forrestedw@gmail.com"
+        }
+    ]
+}
