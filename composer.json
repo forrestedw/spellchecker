@@ -1,7 +1,7 @@
 {
     "name": "forrestedw/spellchecker",
     "description": "A convenient chainable wrapper for tigitz/php-spellchecker",
-    "type": "project",
+    "type": "library",
     "require": {
         "tigitz/php-spellchecker": "^0.1.1"
     },
